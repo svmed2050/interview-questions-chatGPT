@@ -12,7 +12,7 @@ in a convenient user-friendly design
 <hr/>
 
 **Responses and data from ChatGPT**
-**were obtained using these four requests:**
+**were obtained using these three requests:**
 
 - Can you write 50 javascript interview
   questions with answers in russian language ?
