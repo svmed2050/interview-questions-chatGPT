@@ -1,4 +1,4 @@
-import str from './data.js'
+import strData from '../data/javascript.js'
 
 // console.log(str.match(/.*\?$/gim))
 // Массив вопросов
@@ -9,6 +9,8 @@ import str from './data.js'
 // const questions = str.match(/.*\?$/gim)
 // const answersFirst = str.match(/^Ответ.*$/gim)
 
+const regexReduntant = /\n{5}^.+\n.+\n/gim
+const str = strData.replace(regexReduntant, '')
 const questions = str.match(/.*\?$/gim)
 const answers = str.match(/^Ответ.*$/gim)
 
