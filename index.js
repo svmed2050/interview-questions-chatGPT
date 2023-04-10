@@ -68,7 +68,8 @@ function pagination(currentPage) {
 	displayPagination(dataArr, currentPage, rows)
 }
 
-pagination(1)
+const currentPage = localStorage.getItem('currentPage')
+pagination(+currentPage)
 
 ////////////////
 
@@ -111,6 +112,7 @@ function createHandlers(pagesCount) {
 			// console.log(event.target.parentNode)
 			event.preventDefault()
 			let currentPage = +event.target.innerHTML // 1,2,3,4
+			localStorage.setItem('currentPage', currentPage)
 			pagination(currentPage)
 		})
 	}
