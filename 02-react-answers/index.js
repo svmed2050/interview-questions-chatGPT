@@ -77,7 +77,7 @@ function pagination(currentPage) {
 	displayPagination(dataArr, currentPage, rows)
 }
 
-let currentPage = localStorage.getItem('currentPage')
+let currentPage = localStorage.getItem('currentPage') || 1
 pagination(+currentPage)
 
 ////////////////
