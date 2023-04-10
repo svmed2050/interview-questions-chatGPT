@@ -52,8 +52,15 @@ function displayData(arr, currentPage, rows) {
 		rootDiv.append(h4)
 		rootDiv.append(p)
 	}
-	// let height = document.body.scrollHeight
+
+	let height = document.body.scrollHeight
 	// window.scrollTo(0, height)
+	window.scrollTo({
+		top: height,
+		behavior: 'instant',
+	})
+	// scrollTo скроллит до указанной позиции.
+	// scrollBy скроллит на указанное количество пикселей.
 }
 
 /////////////////
@@ -68,7 +75,7 @@ function pagination(currentPage) {
 	displayPagination(dataArr, currentPage, rows)
 }
 
-const currentPage = localStorage.getItem('currentPage')
+let currentPage = localStorage.getItem('currentPage')
 pagination(+currentPage)
 
 ////////////////
@@ -81,38 +88,69 @@ function displayPagination(arrData, currentPage, rowPerPage) {
 	paginationEl.classList.add('pagination')
 	const nav = document.querySelector('nav')
 	nav.append(paginationEl)
-	const pagesCount = Math.ceil(arrData.length / rowPerPage)
+	let pagesCount = Math.ceil(arrData.length / rowPerPage)
 
 	for (let i = 0; i < pagesCount; i++) {
-		const liEl = document.createElement('li')
-		liEl.classList.add('page-item')
-		const atag = document.createElement('a')
-		atag.classList.add('page-link')
-		atag.setAttribute('href', '#')
-		atag.innerHTML = i + 1
-		liEl.appendChild(atag)
+		const liEl = createPaginationEl(i + 1)
 		paginationEl.appendChild(liEl)
-
-		// `<li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>`
-		// paginationEl.insertAdjacentHTML('beforeend', liEl)
 
 		if (currentPage === i + 1) {
 			liEl.classList.add('active')
 		}
 	}
+
+	if (currentPage > 1) {
+		// Create Prev Button
+		const prev = createPaginationEl('Prev')
+		prev.classList.add('prev')
+		paginationEl.insertBefore(prev, paginationEl.firstChild)
+		pagesCount++
+	}
+
+	if (currentPage < pagesCount - 1) {
+		// Create Next Button
+		const next = createPaginationEl('Next')
+		next.classList.add('next')
+		paginationEl.appendChild(next)
+
+		pagesCount++
+	}
 	createHandlers(pagesCount)
+}
+/////////////////
+
+function createPaginationEl(innerText) {
+	// `<li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>`
+	// paginationEl.insertAdjacentHTML('beforeend', liEl)
+	const liEl = document.createElement('li')
+	liEl.classList.add('page-item')
+	const atag = document.createElement('a')
+	atag.classList.add('page-link')
+	atag.setAttribute('href', '#')
+	atag.innerHTML = innerText
+	liEl.appendChild(atag)
+	return liEl
 }
 
 ////////////////
 
 function createHandlers(pagesCount) {
 	const liEl = document.querySelectorAll('.page-item')
+	// console.log(liEl)
 	for (let i = 0; i < pagesCount; i++) {
 		liEl[i].addEventListener('click', (event) => {
 			// console.log(event.target.parentNode)
 			event.preventDefault()
-			let currentPage = +event.target.innerHTML // 1,2,3,4
-			localStorage.setItem('currentPage', currentPage)
+
+			if (event.target.innerHTML === 'Next') {
+				currentPage++
+			} else if (event.target.innerHTML === 'Prev') {
+				currentPage--
+			} else {
+				currentPage = +event.target.innerHTML // 1,2,3,4
+				localStorage.setItem('currentPage', currentPage)
+			}
+
 			pagination(currentPage)
 		})
 	}
