@@ -72,3 +72,16 @@ footer p {
 h4 {
   font-size: 16px;
 }
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #988caf !Important;
+    border: solid 1px #988caf !Important;
+}
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #8e8c91;
+}

@@ -15,7 +15,6 @@ const answers = str.match(/^Ответ.*$/gim)
 for (let i = 0; i < answers.length; i++) {
 	answers[i] = answers[i].replace(/Ответ: /, '')
 }
-console.log(answers)
 
 const dataArr = []
 
@@ -34,7 +33,7 @@ createArrData()
 
 /////////////////
 
-function displayData(arr) {
+function displayData(arr, currentPage, rows) {
 	const oldDiv = document.querySelector('.root')
 	if (oldDiv) oldDiv.remove()
 
@@ -45,11 +44,11 @@ function displayData(arr) {
 	const main = document.querySelector('main')
 	main.append(rootDiv)
 
-	for (let item of arr) {
+	for (let i = 0; i < arr.length; i++) {
 		const h4 = document.createElement('h4')
 		const p = document.createElement('p')
-		h4.innerHTML = item[0]
-		p.innerHTML = item[1]
+		h4.innerHTML = `${i + 1 + (currentPage - 1) * rows}. ${arr[i][0]}`
+		p.innerHTML = arr[i][1]
 		rootDiv.append(h4)
 		rootDiv.append(p)
 	}
@@ -65,15 +64,15 @@ function pagination(currentPage) {
 	const start = rows * (currentPage - 1)
 	const end = start + rows
 	const paginatedData = dataArr.slice(start, end)
-	displayData(paginatedData)
-	displayPagination(dataArr, rows)
+	displayData(paginatedData, currentPage, rows)
+	displayPagination(dataArr, currentPage, rows)
 }
 
 pagination(1)
 
 ////////////////
 
-function displayPagination(arrData, rowPerPage) {
+function displayPagination(arrData, currentPage, rowPerPage) {
 	const oldUl = document.querySelector('.pagination')
 	if (oldUl) oldUl.remove()
 
@@ -84,10 +83,21 @@ function displayPagination(arrData, rowPerPage) {
 	const pagesCount = Math.ceil(arrData.length / rowPerPage)
 
 	for (let i = 0; i < pagesCount; i++) {
-		const liEl = `<li class="page-item"><a class="page-link" href="#">${
-			i + 1
-		}</a></li>`
-		paginationEl.insertAdjacentHTML('beforeend', liEl)
+		const liEl = document.createElement('li')
+		liEl.classList.add('page-item')
+		const atag = document.createElement('a')
+		atag.classList.add('page-link')
+		atag.setAttribute('href', '#')
+		atag.innerHTML = i + 1
+		liEl.appendChild(atag)
+		paginationEl.appendChild(liEl)
+
+		// `<li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>`
+		// paginationEl.insertAdjacentHTML('beforeend', liEl)
+
+		if (currentPage === i + 1) {
+			liEl.classList.add('active')
+		}
 	}
 	createHandlers(pagesCount)
 }
@@ -98,6 +108,7 @@ function createHandlers(pagesCount) {
 	const liEl = document.querySelectorAll('.page-item')
 	for (let i = 0; i < pagesCount; i++) {
 		liEl[i].addEventListener('click', (event) => {
+			// console.log(event.target.parentNode)
 			event.preventDefault()
 			let currentPage = +event.target.innerHTML // 1,2,3,4
 			pagination(currentPage)
