@@ -2,6 +2,7 @@
   width: 600px;
 }
 
+
 img {
   object-fit: cover;
   max-width: 60%;
@@ -9,4 +10,22 @@ img {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 40px;
+}
+
+footer {
+  margin-top: 100px;
+  width: 100%;
+  background: rgb(248, 248, 248);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(151, 150, 150);
+}
+footer p {
+  transform: translateY(30%);
+}
+
+h4 {
+  font-size: 16px;
 }

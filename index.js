@@ -6,8 +6,17 @@ import str from './data.js'
 // console.log(str.match(/^Ответ.*$/gim))
 // Массив ответов
 
+// const questions = str.match(/.*\?$/gim)
+// const answersFirst = str.match(/^Ответ.*$/gim)
+
 const questions = str.match(/.*\?$/gim)
 const answers = str.match(/^Ответ.*$/gim)
+
+for (let i = 0; i < answers.length; i++) {
+	answers[i] = answers[i].replace(/Ответ: /, '')
+}
+console.log(answers)
+
 const dataArr = []
 
 function createArrData() {
@@ -44,8 +53,8 @@ function displayData(arr) {
 		rootDiv.append(h4)
 		rootDiv.append(p)
 	}
-	let height = document.body.scrollHeight
-	window.scrollTo(0, height)
+	// let height = document.body.scrollHeight
+	// window.scrollTo(0, height)
 }
 
 /////////////////
