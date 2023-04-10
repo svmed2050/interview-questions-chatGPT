@@ -78,6 +78,8 @@ function pagination(currentPage) {
 }
 
 let currentPage = localStorage.getItem('currentPage') || 1
+console.log(localStorage.getItem('currentPage'))
+
 pagination(+currentPage)
 
 ////////////////
