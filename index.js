@@ -87,10 +87,23 @@ function displayPagination(arrData, currentPage, rowPerPage) {
 	const paginationEl = document.createElement('ul')
 	paginationEl.classList.add('pagination')
 	const nav = document.querySelector('nav')
-	nav.append(paginationEl)
+	nav.prepend(paginationEl)
 	let pagesCount = Math.ceil(arrData.length / rowPerPage)
 
-	for (let i = 0; i < pagesCount; i++) {
+	let min = 0,
+		max = 4
+	if (currentPage >= 4) {
+		min = currentPage - 3
+
+		max = currentPage < pagesCount ? currentPage + 1 : currentPage
+		// if (currentPage < pagesCount) {
+		// 	max = currentPage + 1
+		// }
+		// if (currentPage === pagesCount) {
+		// 	max = currentPage
+		// }
+	}
+	for (let i = min; i < max; i++) {
 		const liEl = createPaginationEl(i + 1)
 		paginationEl.appendChild(liEl)
 
@@ -98,6 +111,9 @@ function displayPagination(arrData, currentPage, rowPerPage) {
 			liEl.classList.add('active')
 		}
 	}
+
+	let infoPages = document.querySelector('.info-pages')
+	infoPages.innerHTML = `Number of pages: ${pagesCount}`
 
 	if (currentPage > 1) {
 		// Create Prev Button
@@ -115,7 +131,8 @@ function displayPagination(arrData, currentPage, rowPerPage) {
 
 		pagesCount++
 	}
-	createHandlers(pagesCount)
+
+	createHandlers()
 }
 /////////////////
 
@@ -134,10 +151,11 @@ function createPaginationEl(innerText) {
 
 ////////////////
 
-function createHandlers(pagesCount) {
+function createHandlers() {
 	const liEl = document.querySelectorAll('.page-item')
 	// console.log(liEl)
-	for (let i = 0; i < pagesCount; i++) {
+
+	for (let i = 0; i < liEl.length; i++) {
 		liEl[i].addEventListener('click', (event) => {
 			// console.log(event.target.parentNode)
 			event.preventDefault()
@@ -148,9 +166,8 @@ function createHandlers(pagesCount) {
 				currentPage--
 			} else {
 				currentPage = +event.target.innerHTML // 1,2,3,4
-				localStorage.setItem('currentPage', currentPage)
 			}
-
+			localStorage.setItem('currentPage', currentPage)
 			pagination(currentPage)
 		})
 	}
